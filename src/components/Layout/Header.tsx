@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Globe, User, Bell, Search, ChevronDown, MapPin, Compass, Award, Users, BookOpen, BarChart3, Home } from 'lucide-react';
+import { Menu, X, Globe, User, Bell, Search, ChevronDown, MapPin, Compass, Award, Users, BookOpen, BarChart3, Home, Settings, LogOut, Heart, Calendar } from 'lucide-react';
+import NotificationCenter from '../Notifications/NotificationCenter';
 
 interface HeaderProps {
   currentPage: string;
@@ -12,6 +13,9 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [unreadNotifications, setUnreadNotifications] = useState(3);
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -33,57 +37,45 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => {
       description: 'Discover sustainable travel'
     },
     { 
-      id: 'discover', 
-      label: 'Discover', 
-      labelFr: 'Découvrir', 
-      labelAr: 'اكتشف',
-      icon: Compass,
-      description: 'Explore destinations & insights',
-      children: [
-        { id: 'analytics', label: 'Travel Insights', labelFr: 'Analyses', labelAr: 'التحليلات', description: 'Real-time tourism data' },
-        { id: 'destination-details', label: 'Destinations', labelFr: 'Destinations', labelAr: 'الوجهات', description: 'Explore places' }
-      ]
+      id: 'search', 
+      label: 'Search', 
+      labelFr: 'Rechercher', 
+      labelAr: 'البحث',
+      icon: Search,
+      description: 'Find destinations, guides, events'
     },
     { 
-      id: 'plan', 
+      id: 'travel-feed', 
+      label: 'Travel Feed', 
+      labelFr: 'Fil de Voyage', 
+      labelAr: 'تغذية السفر',
+      icon: Compass,
+      description: 'Latest travel updates and content'
+    },
+    { 
+      id: 'plan-trip', 
       label: 'Plan Trip', 
       labelFr: 'Planifier', 
       labelAr: 'خطط رحلة',
       icon: MapPin,
-      description: 'Create your perfect journey'
+      description: 'Create your perfect journey',
+      children: [
+        { id: 'plan-with-ai', label: 'With AI', labelFr: 'Avec IA', labelAr: 'مع الذكاء الاصطناعي', description: 'AI-assisted trip planning' },
+        { id: 'plan-without-ai', label: 'Without AI', labelFr: 'Sans IA', labelAr: 'بدون ذكاء اصطناعي', description: 'Manual trip planning' }
+      ]
     },
     { 
       id: 'community', 
-      label: 'Community', 
-      labelFr: 'Communauté', 
+      label: 'Discover', 
+      labelFr: 'Découvrir', 
       labelAr: 'المجتمع',
-      icon: Users,
-      description: 'Connect with travelers',
-      children: [
-        { id: 'community', label: 'Community Hub', labelFr: 'Hub Communautaire', labelAr: 'مركز المجتمع', description: 'Connect with travelers' },
-        { id: 'newsfeed', label: 'Travel Feed', labelFr: 'Actualités', labelAr: 'الأخبار', description: 'Latest travel updates' },
-        { id: 'stories', label: 'Local Stories', labelFr: 'Histoires', labelAr: 'القصص', description: 'Cultural narratives' }
-      ]
-    },
-    { 
-      id: 'learn', 
-      label: 'Learn', 
-      labelFr: 'Apprendre', 
-      labelAr: 'تعلم',
       icon: BookOpen,
-      description: 'Educational content',
+      description: 'Travel guides and insights',
       children: [
-        { id: 'blog', label: 'Travel Guide', labelFr: 'Guide', labelAr: 'الدليل', description: 'Expert travel advice' },
-        { id: 'stories', label: 'Cultural Stories', labelFr: 'Histoires Culturelles', labelAr: 'القصص الثقافية', description: 'Local heritage' }
+        { id: 'blog', label: 'Travel Guide', labelFr: 'Guide de Voyage', labelAr: 'دليل السفر', description: 'Expert travel advice' },
+        { id: 'stories', label: 'Stories', labelFr: 'Histoires', labelAr: 'القصص', description: 'Cultural narratives' },
+        { id: 'analytics', label: 'Travel Insights', labelFr: 'Analyses de Voyage', labelAr: 'رؤى السفر', description: 'Real-time tourism data' }
       ]
-    },
-    { 
-      id: 'rewards', 
-      label: 'Rewards', 
-      labelFr: 'Récompenses', 
-      labelAr: 'المكافآت',
-      icon: Award,
-      description: 'Track your achievements'
     }
   ];
 
@@ -99,10 +91,19 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => {
   };
 
   const handleNavigation = (pageId: string) => {
-    onPageChange(pageId === 'plan' ? 'itinerary' : pageId);
+    if (pageId === 'plan-with-ai' || pageId === 'plan-without-ai') {
+      onPageChange('itinerary');
+    } else if (pageId === 'search') {
+      onPageChange('search');
+    } else if (pageId === 'travel-feed') {
+      onPageChange('newsfeed');
+    } else {
+      onPageChange(pageId);
+    }
     setIsMenuOpen(false);
     setActiveDropdown(null);
   };
+    setShowProfileMenu(false);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -266,26 +267,131 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => {
             </div>
 
             {/* Notifications */}
-            <button className="p-2 rounded-lg text-gray-400 hover:text-green-600 hover:bg-green-50 transition-colors relative">
+            <button 
+              onClick={() => setShowNotifications(true)}
+              className="p-2 rounded-lg text-gray-400 hover:text-green-600 hover:bg-green-50 transition-colors relative"
+            >
               <Bell size={20} />
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></div>
+              {unreadNotifications > 0 && (
+                <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
+                  <span className="text-xs text-white font-medium">{unreadNotifications}</span>
+                </div>
+              )}
             </button>
 
             {/* User Profile */}
-            <button
-              onClick={() => handleNavigation('profile')}
-              className="flex items-center space-x-2 p-1 rounded-lg hover:bg-green-50 transition-colors"
-            >
-              <img
-                src="https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2"
-                alt="Profile"
-                className="w-8 h-8 rounded-full border-2 border-green-200"
-              />
-              <div className="hidden md:block text-left">
-                <p className="text-sm font-medium text-gray-900">Amina</p>
-                <p className="text-xs text-green-600">Level 7</p>
+            <div className="relative">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowProfileMenu(!showProfileMenu);
+                }}
+                className="flex items-center space-x-2 p-1 rounded-lg hover:bg-green-50 transition-colors"
+              >
+                <img
+                  src="https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2"
+                  alt="Profile"
+                  className="w-8 h-8 rounded-full border-2 border-green-200"
+                />
+                <div className="hidden md:block text-left">
+                  <p className="text-sm font-medium text-gray-900">Amina</p>
+                  <p className="text-xs text-green-600">Level 7</p>
+                </div>
+                <ChevronDown className="w-4 h-4 text-gray-400" />
+              </button>
+
+              {/* Profile Dropdown Menu */}
+              {showProfileMenu && (
+                <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50">
+                  <div className="px-4 py-3 border-b border-gray-100">
+                    <div className="flex items-center space-x-3">
+                      <img
+                        src="https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2"
+                        alt="Profile"
+                        className="w-12 h-12 rounded-full border-2 border-green-200"
+                      />
+                      <div>
+                        <p className="font-medium text-gray-900">Amina Ben Ahmed</p>
+                        <p className="text-sm text-green-600">Level 7 • 2,850 points</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="py-2">
+                    <button
+                      onClick={() => {
+                        handleNavigation('profile');
+                        setShowProfileMenu(false);
+                      }}
+                      className="w-full px-4 py-2 text-left flex items-center space-x-3 hover:bg-green-50 transition-colors"
+                    >
+                      <User className="w-4 h-4 text-gray-500" />
+                      <span className="text-gray-700">My Profile</span>
+                    </button>
+                    
+                    <button
+                      onClick={() => {
+                        handleNavigation('rewards');
+                        setShowProfileMenu(false);
+                      }}
+                      className="w-full px-4 py-2 text-left flex items-center space-x-3 hover:bg-green-50 transition-colors"
+                    >
+                      <Award className="w-4 h-4 text-gray-500" />
+                      <span className="text-gray-700">Rewards & Achievements</span>
+                    </button>
+                    
+                    <button
+                      onClick={() => {
+                        setShowProfileMenu(false);
+                      }}
+                      className="w-full px-4 py-2 text-left flex items-center space-x-3 hover:bg-green-50 transition-colors"
+                    >
+                      <Heart className="w-4 h-4 text-gray-500" />
+                      <span className="text-gray-700">Wishlist</span>
+                    </button>
+                    
+                    <button
+                      onClick={() => {
+                        setShowProfileMenu(false);
+                      }}
+                      className="w-full px-4 py-2 text-left flex items-center space-x-3 hover:bg-green-50 transition-colors"
+                    >
+                      <Calendar className="w-4 h-4 text-gray-500" />
+                      <span className="text-gray-700">My Bookings</span>
+                    </button>
+                  </div>
+                  
+                  <div className="border-t border-gray-100 py-2">
+                    <button
+                      onClick={() => {
+                        setShowProfileMenu(false);
+                      }}
+                      className="w-full px-4 py-2 text-left flex items-center space-x-3 hover:bg-green-50 transition-colors"
+                    >
+                      <Settings className="w-4 h-4 text-gray-500" />
+                      <span className="text-gray-700">Settings</span>
+                    </button>
+                    
+                    <button
+                      onClick={() => {
+                        setShowProfileMenu(false);
+                      }}
+                      className="w-full px-4 py-2 text-left flex items-center space-x-3 hover:bg-red-50 transition-colors text-red-600"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      <span>Sign Out</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Notification Center */}
+            <NotificationCenter 
+              isOpen={showNotifications} 
+              onClose={() => setShowNotifications(false)} 
+            />
               </div>
-            </button>
 
             {/* Mobile Menu Button */}
             <button
