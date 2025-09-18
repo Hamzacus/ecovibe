@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Globe, User, Bell, Search, ChevronDown, MapPin, Compass, Award, Users, BookOpen, BarChart3, Home, Settings, LogOut, Heart, Calendar, MessageCircle } from 'lucide-react';
+import { 
+  Menu, X, Globe, User, Bell, Search, ChevronDown, 
+  MapPin, Compass, Award, Users, BookOpen, BarChart3, 
+  Home, Settings, LogOut, Heart, Calendar, MessageCircle 
+} from 'lucide-react';
 import NotificationCenter from '../Notifications/NotificationCenter';
 import LanguageSwitch from '../Language/LanguageSwitch';
 
@@ -81,7 +85,6 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange, onAuthReques
     }
   ];
 
-
   const handleDropdownClick = (e: React.MouseEvent, dropdownId: string) => {
     e.stopPropagation();
     setActiveDropdown(activeDropdown === dropdownId ? null : dropdownId);
@@ -103,7 +106,6 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange, onAuthReques
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // Implement search functionality
       console.log('Searching for:', searchQuery);
       setIsSearchOpen(false);
       setSearchQuery('');
