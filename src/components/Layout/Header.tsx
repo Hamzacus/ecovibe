@@ -1,27 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Globe, User, Bell, Search, ChevronDown, MapPin, Compass, Award, Users, BookOpen, BarChart3, Home, Settings, LogOut, Heart, Calendar } from 'lucide-react';
 import NotificationCenter from '../Notifications/NotificationCenter';
+import LanguageSwitch from '../Language/LanguageSwitch';
 
 interface HeaderProps {
   currentPage: string;
   onPageChange: (page: string) => void;
+  onAuthRequest?: (mode: 'login' | 'register' | 'reset-password', userType: 'seeker' | 'provider') => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => {
+const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange, onAuthRequest }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [unreadNotifications, setUnreadNotifications] = useState(3);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Mock login state
 
   // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = () => {
       setActiveDropdown(null);
-      setIsLanguageOpen(false);
     };
     document.addEventListener('click', handleClickOutside);
     return () => document.removeEventListener('click', handleClickOutside);
@@ -60,8 +61,8 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => {
       icon: MapPin,
       description: 'Create your perfect journey',
       children: [
-        { id: 'plan-with-ai', label: 'With AI', labelFr: 'Avec IA', labelAr: 'مع الذكاء الاصطناعي', description: 'AI-assisted trip planning' },
-        { id: 'plan-without-ai', label: 'Without AI', labelFr: 'Sans IA', labelAr: 'بدون ذكاء اصطناعي', description: 'Manual trip planning' }
+        { id: 'itinerary', label: 'With AI', labelFr: 'Avec IA', labelAr: 'مع الذكاء الاصطناعي', description: 'AI-assisted trip planning' },
+        { id: 'manual-trip-planner', label: 'Manual Planning', labelFr: 'Planification Manuelle', labelAr: 'التخطيط اليدوي', description: 'Collaborate with local guides' }
       ]
     },
     { 
@@ -74,16 +75,12 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => {
       children: [
         { id: 'blog', label: 'Travel Guide', labelFr: 'Guide de Voyage', labelAr: 'دليل السفر', description: 'Expert travel advice' },
         { id: 'stories', label: 'Stories', labelFr: 'Histoires', labelAr: 'القصص', description: 'Cultural narratives' },
-        { id: 'analytics', label: 'Travel Insights', labelFr: 'Analyses de Voyage', labelAr: 'رؤى السفر', description: 'Real-time tourism data' }
+        { id: 'analytics', label: 'Travel Insights', labelFr: 'Analyses de Voyage', labelAr: 'رؤى السفر', description: 'Real-time tourism data' },
+        { id: 'events', label: 'Events', labelFr: 'Événements', labelAr: 'الأحداث', description: 'Cultural events and activities' }
       ]
     }
   ];
 
-  const languages = [
-    { code: 'en', label: 'English', flag: '🇬🇧' },
-    { code: 'fr', label: 'Français', flag: '🇫🇷' },
-    { code: 'ar', label: 'العربية', flag: '🇹🇳' },
-  ];
 
   const handleDropdownClick = (e: React.MouseEvent, dropdownId: string) => {
     e.stopPropagation();
@@ -91,9 +88,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => {
   };
 
   const handleNavigation = (pageId: string) => {
-    if (pageId === 'plan-with-ai' || pageId === 'plan-without-ai') {
-      onPageChange('itinerary');
-    } else if (pageId === 'search') {
+    if (pageId === 'search') {
       onPageChange('search');
     } else if (pageId === 'travel-feed') {
       onPageChange('newsfeed');
@@ -226,6 +221,25 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => {
               )}
             </div>
 
+            {/* Language Switch */}
+            <LanguageSwitch variant="header" />
+
+            {/* Wishlist */}
+            <button 
+              onClick={() => onPageChange('wishlist')}
+              className="p-2 rounded-lg hover:bg-gray-100"
+            >
+              <Heart className="w-5 h-5 text-gray-600" />
+            </button>
+
+            {/* Messages */}
+            <button 
+              onClick={() => onPageChange('messages')}
+              className="p-2 rounded-lg hover:bg-gray-100"
+            >
+              <MessageCircle className="w-5 h-5 text-gray-600" />
+            </button>
+
             {/* Notification Center */}
             <div className="relative">
               <button onClick={() => setShowNotifications((prev) => !prev)} className="p-2 rounded-lg hover:bg-gray-100">
@@ -238,37 +252,61 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => {
               )}
             </div>
 
-            {/* Profile Menu */}
-            <div className="relative">
-              <button
-                onClick={() => setShowProfileMenu((prev) => !prev)}
-                className="p-2 rounded-lg hover:bg-gray-100"
-              >
-                <User className="w-5 h-5 text-gray-600" />
-              </button>
-              {showProfileMenu && (
-                <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-200 py-2">
-                  <button
-                    onClick={() => handleNavigation('profile')}
-                    className="w-full text-left px-4 py-3 hover:bg-green-50 transition-colors"
-                  >
-                    Profile
-                  </button>
-                  <button
-                    onClick={() => handleNavigation('settings')}
-                    className="w-full text-left px-4 py-3 hover:bg-green-50 transition-colors"
-                  >
-                    Settings
-                  </button>
-                  <button
-                    onClick={() => handleNavigation('logout')}
-                    className="w-full text-left px-4 py-3 hover:bg-green-50 transition-colors"
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
-            </div>
+            {/* Auth/Profile Section */}
+            {isLoggedIn ? (
+              <div className="relative">
+                <button
+                  onClick={() => setShowProfileMenu((prev) => !prev)}
+                  className="p-2 rounded-lg hover:bg-gray-100"
+                >
+                  <User className="w-5 h-5 text-gray-600" />
+                </button>
+                {showProfileMenu && (
+                  <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-200 py-2">
+                    <button
+                      onClick={() => handleNavigation('profile')}
+                      className="w-full text-left px-4 py-3 hover:bg-green-50 transition-colors"
+                    >
+                      Profile
+                    </button>
+                    <button
+                      onClick={() => handleNavigation('seeker-dashboard')}
+                      className="w-full text-left px-4 py-3 hover:bg-green-50 transition-colors"
+                    >
+                      My Dashboard
+                    </button>
+                    <button
+                      onClick={() => handleNavigation('provider-dashboard')}
+                      className="w-full text-left px-4 py-3 hover:bg-green-50 transition-colors"
+                    >
+                      Provider Dashboard
+                    </button>
+                    <hr className="my-2" />
+                    <button
+                      onClick={() => setIsLoggedIn(false)}
+                      className="w-full text-left px-4 py-3 hover:bg-red-50 text-red-600 transition-colors"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => onAuthRequest?.('login', 'seeker')}
+                  className="text-gray-600 hover:text-green-600 px-3 py-2 rounded-lg transition-colors"
+                >
+                  Sign In
+                </button>
+                <button
+                  onClick={() => onAuthRequest?.('register', 'seeker')}
+                  className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
+                >
+                  Join Now
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -318,6 +356,12 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => {
           </div>
         </div>
       )}
+
+      {/* Notification Center */}
+      <NotificationCenter 
+        isOpen={showNotifications} 
+        onClose={() => setShowNotifications(false)} 
+      />
     </header>
   );
 };
