@@ -250,6 +250,21 @@ const RewardsDashboard: React.FC = () => {
                         <p className="text-xs text-green-600">
                           Unlocked {achievement.unlockedDate.toLocaleDateString()}
                         </p>
+                        <div className="mt-2">
+                          <div className="w-full bg-green-200 rounded-full h-2">
+                            <div className="bg-green-600 h-2 rounded-full" style={{ width: '100%' }}></div>
+                          </div>
+                          <p className="text-xs text-green-600 mt-1">Achievement Complete!</p>
+                        </div>
+                      </div>
+                    )}
+
+                    {!achievement.unlocked && (
+                      <div className="mt-3 pt-3 border-t border-gray-200">
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div className="bg-gray-400 h-2 rounded-full" style={{ width: '45%' }}></div>
+                        </div>
+                        <p className="text-xs text-gray-500 mt-1">45% Progress</p>
                       </div>
                     )}
                   </div>

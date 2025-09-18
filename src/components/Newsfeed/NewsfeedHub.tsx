@@ -5,6 +5,18 @@ const NewsfeedHub: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
+  const categories = [
+    { id: 'all', label: 'All Content' },
+    { id: 'destinations', label: 'Destinations' },
+    { id: 'guides', label: 'Local Guides' },
+    { id: 'experiences', label: 'Experiences' },
+    { id: 'events', label: 'Events' },
+    { id: 'news', label: 'Eco News' },
+    { id: 'recommendations', label: 'AI Recommendations' },
+    { id: 'stories', label: 'Cultural Stories' },
+    { id: 'activities', label: 'Activities' }
+  ];
+
   const lastAdded = [
     {
       id: 1,
