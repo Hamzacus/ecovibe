@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heart, Compare, X, Star, MapPin, DollarSign, Clock, Users, Check, Minus } from 'lucide-react';
+import { Heart, GitCompare as Compare, X, Star, MapPin, DollarSign, Clock, Users, Check, Minus } from 'lucide-react';
 
 interface WishlistItem {
   id: string;
