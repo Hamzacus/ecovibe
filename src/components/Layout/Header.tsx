@@ -102,8 +102,8 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => {
     }
     setIsMenuOpen(false);
     setActiveDropdown(null);
-  };
     setShowProfileMenu(false);
+  };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -212,196 +212,76 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => {
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search destinations, guides..."
-                    className="w-64 px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                    autoFocus
+                    placeholder="Search"
+                    className="border border-gray-300 rounded-lg p-2 pl-10 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                   />
-                  <button
-                    type="button"
-                    onClick={() => setIsSearchOpen(false)}
-                    className="ml-2 p-2 text-gray-400 hover:text-gray-600"
-                  >
-                    <X className="w-4 h-4" />
+                  <button type="submit" className="absolute left-2">
+                    <Search className="w-4 h-4 text-gray-600" />
                   </button>
                 </form>
               ) : (
-                <button
-                  onClick={() => setIsSearchOpen(true)}
-                  className="hidden md:flex p-2 rounded-lg text-gray-400 hover:text-green-600 hover:bg-green-50 transition-colors"
-                  title="Search"
-                >
-                  <Search size={20} />
+                <button onClick={() => setIsSearchOpen(true)} className="p-2 rounded-lg hover:bg-gray-100">
+                  <Search className="w-5 h-5 text-gray-600" />
                 </button>
               )}
             </div>
 
-            {/* Language Selector */}
-            <div className="relative">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsLanguageOpen(!isLanguageOpen);
-                }}
-                className="flex items-center space-x-1 p-2 rounded-lg text-gray-600 hover:text-green-600 hover:bg-green-50 transition-colors"
-                title="Change Language"
-              >
-                <Globe size={20} />
-                <span className="hidden sm:inline text-sm">EN</span>
-                <ChevronDown className="w-3 h-3" />
-              </button>
-
-              {isLanguageOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50">
-                  {languages.map((lang) => (
-                    <button
-                      key={lang.code}
-                      onClick={() => setIsLanguageOpen(false)}
-                      className="w-full px-4 py-2 text-left flex items-center space-x-3 hover:bg-green-50 transition-colors"
-                    >
-                      <span>{lang.flag}</span>
-                      <span className="text-sm text-gray-700">{lang.label}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Notifications */}
-            <button 
-              onClick={() => setShowNotifications(true)}
-              className="p-2 rounded-lg text-gray-400 hover:text-green-600 hover:bg-green-50 transition-colors relative"
-            >
-              <Bell size={20} />
-              {unreadNotifications > 0 && (
-                <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
-                  <span className="text-xs text-white font-medium">{unreadNotifications}</span>
-                </div>
-              )}
-            </button>
-
-            {/* User Profile */}
-            <div className="relative">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setShowProfileMenu(!showProfileMenu);
-                }}
-                className="flex items-center space-x-2 p-1 rounded-lg hover:bg-green-50 transition-colors"
-              >
-                <img
-                  src="https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2"
-                  alt="Profile"
-                  className="w-8 h-8 rounded-full border-2 border-green-200"
-                />
-                <div className="hidden md:block text-left">
-                  <p className="text-sm font-medium text-gray-900">Amina</p>
-                  <p className="text-xs text-green-600">Level 7</p>
-                </div>
-                <ChevronDown className="w-4 h-4 text-gray-400" />
-              </button>
-
-              {/* Profile Dropdown Menu */}
-              {showProfileMenu && (
-                <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50">
-                  <div className="px-4 py-3 border-b border-gray-100">
-                    <div className="flex items-center space-x-3">
-                      <img
-                        src="https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2"
-                        alt="Profile"
-                        className="w-12 h-12 rounded-full border-2 border-green-200"
-                      />
-                      <div>
-                        <p className="font-medium text-gray-900">Amina Ben Ahmed</p>
-                        <p className="text-sm text-green-600">Level 7 • 2,850 points</p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="py-2">
-                    <button
-                      onClick={() => {
-                        handleNavigation('profile');
-                        setShowProfileMenu(false);
-                      }}
-                      className="w-full px-4 py-2 text-left flex items-center space-x-3 hover:bg-green-50 transition-colors"
-                    >
-                      <User className="w-4 h-4 text-gray-500" />
-                      <span className="text-gray-700">My Profile</span>
-                    </button>
-                    
-                    <button
-                      onClick={() => {
-                        handleNavigation('rewards');
-                        setShowProfileMenu(false);
-                      }}
-                      className="w-full px-4 py-2 text-left flex items-center space-x-3 hover:bg-green-50 transition-colors"
-                    >
-                      <Award className="w-4 h-4 text-gray-500" />
-                      <span className="text-gray-700">Rewards & Achievements</span>
-                    </button>
-                    
-                    <button
-                      onClick={() => {
-                        setShowProfileMenu(false);
-                      }}
-                      className="w-full px-4 py-2 text-left flex items-center space-x-3 hover:bg-green-50 transition-colors"
-                    >
-                      <Heart className="w-4 h-4 text-gray-500" />
-                      <span className="text-gray-700">Wishlist</span>
-                    </button>
-                    
-                    <button
-                      onClick={() => {
-                        setShowProfileMenu(false);
-                      }}
-                      className="w-full px-4 py-2 text-left flex items-center space-x-3 hover:bg-green-50 transition-colors"
-                    >
-                      <Calendar className="w-4 h-4 text-gray-500" />
-                      <span className="text-gray-700">My Bookings</span>
-                    </button>
-                  </div>
-                  
-                  <div className="border-t border-gray-100 py-2">
-                    <button
-                      onClick={() => {
-                        setShowProfileMenu(false);
-                      }}
-                      className="w-full px-4 py-2 text-left flex items-center space-x-3 hover:bg-green-50 transition-colors"
-                    >
-                      <Settings className="w-4 h-4 text-gray-500" />
-                      <span className="text-gray-700">Settings</span>
-                    </button>
-                    
-                    <button
-                      onClick={() => {
-                        setShowProfileMenu(false);
-                      }}
-                      className="w-full px-4 py-2 text-left flex items-center space-x-3 hover:bg-red-50 transition-colors text-red-600"
-                    >
-                      <LogOut className="w-4 h-4" />
-                      <span>Sign Out</span>
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-
             {/* Notification Center */}
-            <NotificationCenter 
-              isOpen={showNotifications} 
-              onClose={() => setShowNotifications(false)} 
-            />
-              </div>
+            <div className="relative">
+              <button onClick={() => setShowNotifications((prev) => !prev)} className="p-2 rounded-lg hover:bg-gray-100">
+                <Bell className="w-5 h-5 text-gray-600" />
+              </button>
+              {unreadNotifications > 0 && (
+                <div className="absolute top-0 right-0 flex items-center justify-center w-5 h-5 rounded-full bg-red-600 text-xs text-white">
+                  {unreadNotifications}
+                </div>
+              )}
+            </div>
 
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden p-2 rounded-lg text-gray-600 hover:text-green-600 hover:bg-green-50 transition-colors"
-              aria-label="Toggle menu"
-            >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+            {/* Profile Menu */}
+            <div className="relative">
+              <button
+                onClick={() => setShowProfileMenu((prev) => !prev)}
+                className="p-2 rounded-lg hover:bg-gray-100"
+              >
+                <User className="w-5 h-5 text-gray-600" />
+              </button>
+              {showProfileMenu && (
+                <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-200 py-2">
+                  <button
+                    onClick={() => handleNavigation('profile')}
+                    className="w-full text-left px-4 py-3 hover:bg-green-50 transition-colors"
+                  >
+                    Profile
+                  </button>
+                  <button
+                    onClick={() => handleNavigation('settings')}
+                    className="w-full text-left px-4 py-3 hover:bg-green-50 transition-colors"
+                  >
+                    Settings
+                  </button>
+                  <button
+                    onClick={() => handleNavigation('logout')}
+                    className="w-full text-left px-4 py-3 hover:bg-green-50 transition-colors"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="lg:hidden p-2 rounded-lg hover:bg-gray-100"
+          >
+            {isMenuOpen ? (
+              <X className="w-6 h-6 text-gray-600" />
+            ) : (
+              <Menu className="w-6 h-6 text-gray-600" />
+            )}
+          </button>
         </div>
       </div>
 
@@ -409,82 +289,32 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => {
       {isMenuOpen && (
         <div className="lg:hidden bg-white border-t border-gray-200 shadow-lg">
           <div className="px-4 py-2 space-y-1 max-h-96 overflow-y-auto">
-            {/* Mobile Search */}
-            <div className="py-2 border-b border-gray-100 mb-2">
-              <form onSubmit={handleSearch} className="flex items-center">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search destinations, guides..."
-                  className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                />
+            {navigation.map((item) => (
+              <div key={item.id}>
                 <button
-                  type="submit"
-                  className="ml-2 p-2 text-green-600 hover:text-green-700"
-                >
-                  <Search className="w-4 h-4" />
-                </button>
-              </form>
-            </div>
-
-            {navigation.map((item) => {
-              const Icon = item.icon;
-              const isActive = currentPage === item.id || 
-                (item.children && item.children.some(child => child.id === currentPage));
-
-              if (item.children) {
-                return (
-                  <div key={item.id} className="space-y-1">
-                    <button
-                      onClick={(e) => handleDropdownClick(e, `mobile-${item.id}`)}
-                      className={`w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
-                        isActive
-                          ? 'bg-green-100 text-green-700'
-                          : 'text-gray-600 hover:text-green-600 hover:bg-green-50'
-                      }`}
-                    >
-                      <div className="flex items-center space-x-3">
-                        <Icon className="w-5 h-5" />
-                        <span>{item.label}</span>
-                      </div>
-                      <ChevronDown className={`w-4 h-4 transition-transform ${
-                        activeDropdown === `mobile-${item.id}` ? 'rotate-180' : ''
-                      }`} />
-                    </button>
-                    
-                    {activeDropdown === `mobile-${item.id}` && (
-                      <div className="ml-8 space-y-1">
-                        {item.children.map((child) => (
-                          <button
-                            key={child.id}
-                            onClick={() => handleNavigation(child.id)}
-                            className="w-full text-left px-4 py-2 rounded-lg text-sm text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors"
-                          >
-                            {child.label}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                );
-              }
-
-              return (
-                <button
-                  key={item.id}
                   onClick={() => handleNavigation(item.id)}
-                  className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
-                    isActive
-                      ? 'bg-green-100 text-green-700'
-                      : 'text-gray-600 hover:text-green-600 hover:bg-green-50'
-                  }`}
+                  className="w-full text-left px-4 py-3 hover:bg-green-50 transition-colors"
                 >
-                  <Icon className="w-5 h-5" />
-                  <span>{item.label}</span>
+                  <div className="flex items-center space-x-2">
+                    <item.icon className="w-5 h-5 text-gray-600" />
+                    <span>{item.label}</span>
+                  </div>
                 </button>
-              );
-            })}
+                {item.children && (
+                  <div className="pl-5">
+                    {item.children.map((child) => (
+                      <button
+                        key={child.id}
+                        onClick={() => handleNavigation(child.id)}
+                        className="w-full text-left px-4 py-3 hover:bg-green-50 transition-colors"
+                      >
+                        {child.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       )}
