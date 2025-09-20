@@ -1,1 +1,12 @@
-{"code":"rate-limited","message":"You have hit the rate limit. Please upgrade to keep chatting.","providerLimitHit":false,"isRetryable":true}
+import React from "react";
+import { AccessibilityProvider } from "./components/UI/AccessibilityProvider";
+
+function App() {
+  return (
+    <AccessibilityProvider>
+      {/* your app’s existing components */}
+    </AccessibilityProvider>
+  );
+}
+
+export default App;
