@@ -42,3 +42,17 @@ export function useAccessibility() {
   }
   return context;
 }
+
+export function AccessibilityPanel() {
+  const { highContrast, toggleHighContrast, increaseFont, decreaseFont } = useAccessibility();
+
+  return (
+    <div style={{ padding: "1rem", borderTop: "1px solid #ccc" }}>
+      <button onClick={toggleHighContrast} style={{ marginRight: "0.5rem" }}>
+        {highContrast ? "Disable High Contrast" : "Enable High Contrast"}
+      </button>
+      <button onClick={increaseFont} style={{ marginRight: "0.5rem" }}>A+</button>
+      <button onClick={decreaseFont}>A-</button>
+    </div>
+  );
+}
