@@ -1,0 +1,314 @@
+/* Accessibility-focused CSS */
+
+/* High contrast mode */
+.high-contrast {
+  --color-primary: #000000;
+  --color-secondary: #ffffff;
+  --color-accent: #0066cc;
+  --color-error: #cc0000;
+  --color-success: #006600;
+  --color-warning: #cc6600;
+}
+
+.high-contrast * {
+  border-color: currentColor !important;
+}
+
+.high-contrast .bg-white {
+  background-color: var(--color-secondary) !important;
+  color: var(--color-primary) !important;
+}
+
+.high-contrast .text-gray-600,
+.high-contrast .text-gray-700,
+.high-contrast .text-gray-800,
+.high-contrast .text-gray-900 {
+  color: var(--color-primary) !important;
+}
+
+.high-contrast .bg-green-600,
+.high-contrast .bg-blue-600 {
+  background-color: var(--color-accent) !important;
+}
+
+/* Reduced motion */
+.reduced-motion *,
+.reduced-motion *::before,
+.reduced-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Enhanced focus indicators */
+.focus-visible *:focus {
+  outline: 3px solid #10b981 !important;
+  outline-offset: 2px !important;
+}
+
+.focus-visible button:focus,
+.focus-visible a:focus,
+.focus-visible input:focus,
+.focus-visible select:focus,
+.focus-visible textarea:focus {
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.5) !important;
+}
+
+/* Font size adjustments */
+html[style*="font-size: 18px"] {
+  --text-xs: 0.833rem;
+  --text-sm: 0.944rem;
+  --text-base: 1.111rem;
+  --text-lg: 1.278rem;
+  --text-xl: 1.444rem;
+}
+
+html[style*="font-size: 20px"] {
+  --text-xs: 0.75rem;
+  --text-sm: 0.85rem;
+  --text-base: 1rem;
+  --text-lg: 1.15rem;
+  --text-xl: 1.3rem;
+}
+
+/* Screen reader optimizations */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.sr-only:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: inherit;
+  margin: inherit;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* Focus management */
+.focus-trap {
+  position: relative;
+}
+
+.focus-trap::before,
+.focus-trap::after {
+  content: '';
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Skip links styling */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: #000;
+  color: #fff;
+  padding: 8px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 1000;
+  transition: top 0.3s;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* Improved color contrast */
+.contrast-enhanced {
+  --tw-text-opacity: 1;
+  color: rgba(0, 0, 0, var(--tw-text-opacity));
+}
+
+.contrast-enhanced .text-gray-500 {
+  color: rgba(55, 65, 81, var(--tw-text-opacity)) !important;
+}
+
+.contrast-enhanced .text-gray-600 {
+  color: rgba(31, 41, 55, var(--tw-text-opacity)) !important;
+}
+
+/* Touch target improvements */
+@media (pointer: coarse) {
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .touch-target {
+    padding: 12px;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-break-before {
+    page-break-before: always;
+  }
+  
+  .print-break-after {
+    page-break-after: always;
+  }
+  
+  .print-break-inside-avoid {
+    page-break-inside: avoid;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .auto-dark {
+    background-color: #1f2937;
+    color: #f9fafb;
+  }
+  
+  .auto-dark .bg-white {
+    background-color: #374151;
+  }
+  
+  .auto-dark .text-gray-900 {
+    color: #f9fafb;
+  }
+  
+  .auto-dark .border-gray-200 {
+    border-color: #4b5563;
+  }
+}
+
+/* Animation preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .auto-contrast {
+    filter: contrast(150%);
+  }
+  
+  .auto-contrast button,
+  .auto-contrast a {
+    border: 2px solid currentColor;
+  }
+}
+
+/* Focus indicators for different input methods */
+.js-focus-visible :focus:not(.focus-visible) {
+  outline: none;
+}
+
+.js-focus-visible .focus-visible {
+  outline: 3px solid #10b981;
+  outline-offset: 2px;
+}
+
+/* Improved link styling */
+a:not(.no-underline) {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+a:hover:not(.no-underline) {
+  text-decoration-thickness: 2px;
+}
+
+/* Better button states */
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+button:not(:disabled):hover {
+  transform: translateY(-1px);
+}
+
+button:not(:disabled):active {
+  transform: translateY(0);
+}
+
+/* Improved form styling */
+input:invalid {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 1px #ef4444;
+}
+
+input:valid {
+  border-color: #10b981;
+}
+
+/* Loading states */
+.loading {
+  position: relative;
+  pointer-events: none;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid #e5e7eb;
+  border-top-color: #10b981;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Error states */
+.error-state {
+  border-color: #ef4444 !important;
+  background-color: #fef2f2 !important;
+}
+
+.error-state:focus {
+  ring-color: #ef4444 !important;
+}
+
+/* Success states */
+.success-state {
+  border-color: #10b981 !important;
+  background-color: #f0fdf4 !important;
+}
+
+.success-state:focus {
+  ring-color: #10b981 !important;
+}
