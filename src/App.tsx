@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import AccessibleHeader from './components/Layout/AccessibleHeader';
+import Header from './components/Layout/Header';
 import Hero from './components/HomePage/Hero';
 import Features from './components/HomePage/Features';
 import Destinations from './components/HomePage/Destinations';
@@ -23,8 +23,6 @@ import AuthPages from './components/Auth/AuthPages';
 import ProviderDashboard from './components/Dashboard/ProviderDashboard';
 import SeekerDashboard from './components/Dashboard/SeekerDashboard';
 import WishlistComparison from './components/Wishlist/WishlistComparison';
-import SkipLinks from './components/UI/SkipLinks';
-import AccessibilityDemo from './components/Examples/AccessibilityDemo';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -143,8 +141,6 @@ function App() {
         return <SeekerDashboard />;
       case 'wishlist':
         return <WishlistComparison />;
-      case 'accessibility-demo':
-        return <AccessibilityDemo />;
       default:
         return (
           <>
@@ -161,13 +157,12 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <SkipLinks />
-      <AccessibleHeader 
+      <Header 
         currentPage={currentPage} 
         onPageChange={setCurrentPage}
         onAuthRequest={handleAuthRequest}
       />
-      <main id="main-content" tabIndex={-1}>
+      <main>
         {renderPage()}
       </main>
     </div>
