@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
+// ---- Types ----
 interface AccessibilityContextProps {
   highContrast: boolean;
   toggleHighContrast: () => void;
@@ -8,8 +9,10 @@ interface AccessibilityContextProps {
   decreaseFont: () => void;
 }
 
+// ---- Context ----
 const AccessibilityContext = createContext<AccessibilityContextProps | undefined>(undefined);
 
+// ---- Provider ----
 export function AccessibilityProvider({ children }: { children: ReactNode }) {
   const [highContrast, setHighContrast] = useState(false);
   const [fontScale, setFontScale] = useState(1);
@@ -35,6 +38,7 @@ export function AccessibilityProvider({ children }: { children: ReactNode }) {
   );
 }
 
+// ---- Hook ----
 export function useAccessibility() {
   const context = useContext(AccessibilityContext);
   if (!context) {
@@ -43,6 +47,7 @@ export function useAccessibility() {
   return context;
 }
 
+// ---- Panel ----
 export function AccessibilityPanel() {
   const { highContrast, toggleHighContrast, increaseFont, decreaseFont } = useAccessibility();
 
